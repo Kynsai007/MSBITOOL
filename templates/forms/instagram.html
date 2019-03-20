@@ -1,0 +1,476 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Webscrapper & Analyzer</title>
+    <!-- Favicon-->
+    <link rel="icon" href="static/favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="static/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="static/plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="static/plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Bootstrap Material Datetime Picker Css -->
+    <link href="static/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
+    <!-- Bootstrap DatePicker Css -->
+    <link href="static/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+
+    <!-- Wait Me Css -->
+    <link href="static/plugins/waitme/waitMe.css" rel="stylesheet" />
+
+    <!-- Bootstrap Select Css -->
+    <link href="static/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="static/css/style.css" rel="stylesheet">
+
+    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
+    <link href="static/css/themes/all-themes.css" rel="stylesheet" />
+</head>
+
+<body class="theme-red">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="preloader">
+                <div class="spinner-layer pl-red">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- #END# Page Loader -->
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <div class="search-icon">
+            <i class="material-icons">search</i>
+        </div>
+        <input type="text" placeholder="START TYPING...">
+        <div class="close-search">
+            <i class="material-icons">close</i>
+        </div>
+    </div>
+    <!-- #END# Search Bar -->
+    <!-- Top Bar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                <a href="javascript:void(0);" class="bars"></a>
+                <a class="navbar-brand" href="/index">Web Scrapper & Analyzer</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Call Search -->
+                    <li><a href="javascript:void(0);" class="js-search" data-close="true"><i class="material-icons">search</i></a></li>
+                    <!-- #END# Call Search -->
+                    <!-- Notifications -->
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                            <i class="material-icons">notifications</i>
+                            <span class="label-count"></span>
+                        </a>
+                     
+                     <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- #Top Bar -->
+    <section>
+            <!-- Left Sidebar -->
+            <aside id="leftsidebar" class="sidebar">
+                <!-- User Info -->
+                <div class="user-info">
+                    {% if session %}
+                    <div class="image">
+                        <img src="{{ image }}" width="48" height="48" alt="User" />
+                    </div>
+                    <div class="info-container">
+                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></div>
+                        <div class="email">{{ username }}</div>
+                        <div class="btn-group user-helper-dropdown">
+                            <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                            <ul class="dropdown-menu pull-right">
+                                <form method="POST" action="/upload" enctype = "multipart/form-data">
+                                <li><input type="file" class="btn btn-primary waves-effect" value="Choose" name="files" style="display: inline-block;width:200px" accept="image/*">&nbsp;<input type="submit" style="display:inline-block;" class="btn btn-primary waves-effect" value="upload"></li>
+                                </form>
+                                {%  with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                  <ul class =flashes>
+                                  {% for message in messages %}
+                                    <b style="color:black">{{ message }}</b>
+                                  {% endfor %}
+                                  </ul>
+                                {% endif %}
+                               {% endwith %}
+                                <li role="separator" class="divider"></li>
+                                <li><a href="javascript:void(0);"><i class="material-icons">person</i>Profile</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout"><i class="material-icons">input</i>Sign Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="info-container">
+                        <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">You are not Logged in!!</div>
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- #User Info -->
+                <!-- Menu -->
+                <div class="menu">
+                    <ul class="list">
+                        <li class="header">MAIN NAVIGATION</li>
+                        <li class="active">
+                            <a href="/index">
+                                <i class="material-icons">home</i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        {% if session %}
+                        <li>
+                                <a href="#">
+                                        <i class="material-icons">notification_important</i>
+                                        <span>About</span>
+                                    </a>
+                                </li>
+                                <li>
+                                        <a id="source" href="#" onclick="check()">
+                                                <i class="material-icons">cloud_download</i>
+                                                <span>Data Scrapper</span>
+                                            </a>
+                                        </li>
+                                        <a href="javascript:void(0);" class="menu-toggle">
+                                            <i class="material-icons">business</i>
+                                            <span>Create Reports</span>
+                                        </a>
+                                        <ul class="ml-menu">
+                                            <li>
+                                                <a href="/createfb">
+                                                    <img src="https://img.icons8.com/material/24/000000/facebook.png"></i>
+                                                    <span>Facebook</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/createinsta">
+                                                    <img src="https://img.icons8.com/material/24/000000/instagram-new.png"></i>
+                                                    <span>Instagram</span>    
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
+                                    </li>
+                                <li>
+                                        
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">pie_chart</i>
+                                <span>Dashboards</span>
+                            </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="">
+                                        <img src="https://img.icons8.com/material/24/000000/facebook.png"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <img src="https://img.icons8.com/material/24/000000/instagram-new.png"></i>
+                                        <span>Instagram</span>    
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li>
+                                <a href="javascript:void(0);" class="menu-toggle">
+                                <i class="material-icons">show_chart</i>
+                                <span>Reports</span>
+                            </a>
+                            <ul class="ml-menu">
+                                <li>
+                                    <a href="/facebookreport">
+                                        <img src="https://img.icons8.com/material/24/000000/facebook.png"></i>
+                                        <span>Facebook</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/instareport">
+                                        <img src="https://img.icons8.com/material/24/000000/instagram-new.png"></i>
+                                        <span>Instagram</span>    
+                                    </a>
+                                </li>
+                                
+                            </ul>
+                        </li>       
+                        {% else %}
+                        <li>
+                                <a href="#">
+                                        <i class="material-icons">notification_important</i>
+                                        <span>About</span>
+                                    </a>
+                                </li>
+                            <li>
+                        <li>
+                                <a href="{{ url_for('signin') }} ">
+                                        <i class="material-icons">exit_to_app</i>
+                                        <span>Sign-in</span>
+                                    </a>
+                                </li>
+                            
+                        {% endif %}
+                            
+                    </ul>
+                </div>
+                
+            </aside>
+            <!-- #END# Left Sidebar -->
+            <!-- Right Sidebar -->
+            <aside id="rightsidebar" class="right-sidebar">
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                    <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
+                    <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active in active" id="skins">
+                        <ul class="demo-choose-skin">
+                            <li data-theme="red" class="active">
+                                <div class="red"></div>
+                                <span>Red</span>
+                            </li>
+                            <li data-theme="pink">
+                                <div class="pink"></div>
+                                <span>Pink</span>
+                            </li>
+                            <li data-theme="purple">
+                                <div class="purple"></div>
+                                <span>Purple</span>
+                            </li>
+                            <li data-theme="deep-purple">
+                                <div class="deep-purple"></div>
+                                <span>Deep Purple</span>
+                            </li>
+                            <li data-theme="indigo">
+                                <div class="indigo"></div>
+                                <span>Indigo</span>
+                            </li>
+                            <li data-theme="blue">
+                                <div class="blue"></div>
+                                <span>Blue</span>
+                            </li>
+                            <li data-theme="light-blue">
+                                <div class="light-blue"></div>
+                                <span>Light Blue</span>
+                            </li>
+                            <li data-theme="cyan">
+                                <div class="cyan"></div>
+                                <span>Cyan</span>
+                            </li>
+                            <li data-theme="teal">
+                                <div class="teal"></div>
+                                <span>Teal</span>
+                            </li>
+                            <li data-theme="green">
+                                <div class="green"></div>
+                                <span>Green</span>
+                            </li>
+                            <li data-theme="light-green">
+                                <div class="light-green"></div>
+                                <span>Light Green</span>
+                            </li>
+                            <li data-theme="lime">
+                                <div class="lime"></div>
+                                <span>Lime</span>
+                            </li>
+                            <li data-theme="yellow">
+                                <div class="yellow"></div>
+                                <span>Yellow</span>
+                            </li>
+                            <li data-theme="amber">
+                                <div class="amber"></div>
+                                <span>Amber</span>
+                            </li>
+                            <li data-theme="orange">
+                                <div class="orange"></div>
+                                <span>Orange</span>
+                            </li>
+                            <li data-theme="deep-orange">
+                                <div class="deep-orange"></div>
+                                <span>Deep Orange</span>
+                            </li>
+                            <li data-theme="brown">
+                                <div class="brown"></div>
+                                <span>Brown</span>
+                            </li>
+                            <li data-theme="grey">
+                                <div class="grey"></div>
+                                <span>Grey</span>
+                            </li>
+                            <li data-theme="blue-grey">
+                                <div class="blue-grey"></div>
+                                <span>Blue Grey</span>
+                            </li>
+                            <li data-theme="black">
+                                <div class="black"></div>
+                                <span>Black</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="settings">
+                        <div class="demo-settings">
+                            
+                            {% if session %}
+                            <p>DATASOURCE SETTINGS</p>
+                            <ul class="setting-list">
+                                <li>
+                                    <span>Facebook</span>
+                                    <div class="switch">
+                                        <label><input id="fb" type="checkbox" onclick="trigger()"><span class="lever"></span></label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>Instagram</span>
+                                    <div class="switch">
+                                        <label><input id="insta" type="checkbox" onclick="trigger()"><span class="lever"></span></label>
+                                    </div>
+                                </li>
+                                
+                                <script>
+                                        function trigger(){
+                                        if(document.getElementById('fb').checked == true){
+                                            $("#source").attr("href", "/facebook");
+                                        }
+                                        if(document.getElementById('insta').checked == true){
+                                            $("#source").attr("href", "/instagram");
+                                        }
+                                         
+                                    }
+                                    function check(){
+                                        if(document.getElementById('fb').checked == false && document.getElementById('insta').checked == false){
+                                            alert('You have not selected a datasource. Please configure it in Settings Panel');
+                                        }
+                                    }
+                                    </script>
+                                <li>
+                                        <a href="https://developers.facebook.com/">
+                                            <img src="https://img.icons8.com/material/24/000000/facebook.png"></i>
+                                            <span>Configure Access Tokens for Facebook</span>
+                                        </a>
+                                </li>
+                            </ul>
+                            {% endif %}
+                            <p>ACCOUNT SETTINGS</p>
+                            <ul class="setting-list">
+                                <li>
+                                    <span>Offline</span>
+                                    <div class="switch">
+                                        <label><input type="checkbox"><span class="lever"></span></label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>Location Permission</span>
+                                    <div class="switch">
+                                        <label><input type="checkbox" checked><span class="lever"></span></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <!-- #END# Right Sidebar -->
+        </section>
+    
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>INSTAGRAM SCRAPPER</h2>
+            </div>
+            <!-- Input -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <h2 class="card-inside-title">Enter Source Details</h2>
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                        <form action="/instascrap" method="GET">
+                                            <div class="form-group form-group-lg">
+                                                    <div class="form-line form-float">
+                                                        <input type="text" class="form-control" name="instalink" placeholder="Public Instagram URL" required/>
+                                                    </div>
+                                            </div>
+                                            <div class="form-group form-group-lg">
+                                                    <div class="form-float">
+                                                        <center><input type="submit" class="btn btn-primary" value="Start Scrapping"/></center>
+                                                    </div>
+                                            </div>
+                                        </form>
+                                       
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+    <!-- Jquery Core Js -->
+    <script src="static/plugins/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core Js -->
+    <script src="static/plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Select Plugin Js -->
+    <script src="static/plugins/bootstrap-select/js/bootstrap-select.js"></script>
+
+    <!-- Slimscroll Plugin Js -->
+    <script src="static/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="static/plugins/node-waves/waves.js"></script>
+
+    <!-- Autosize Plugin Js -->
+    <script src="static/plugins/autosize/autosize.js"></script>
+
+    <!-- Moment Plugin Js -->
+    <script src="static/plugins/momentjs/moment.js"></script>
+
+    <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="static/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+
+    <!-- Bootstrap Datepicker Plugin Js -->
+    <script src="static/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+    <!-- Custom Js -->
+    <script src="static/js/admin.js"></script>
+    <script src="static/js/pages/forms/basic-form-elements.js"></script>
+
+    <!-- Demo Js -->
+    <script src="static/js/demo.js"></script>
+</body>
+</html>
