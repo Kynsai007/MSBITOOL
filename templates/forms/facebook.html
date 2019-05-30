@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Webscrapper & Analyzer</title>
+    <title>Social Media Data Extractor & Analyzer</title>
     <!-- Favicon-->
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -76,7 +76,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="/index">Web Scrapper & Analyzer</a>
+                <a class="navbar-brand" href="/index">Social Media Data Extractor & Analyzer</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -157,7 +157,7 @@
                                 <li>
                                         <a id="source" href="#" onclick="check()">
                                                 <i class="material-icons">cloud_download</i>
-                                                <span>Data Scrapper</span>
+                                                <span>Data Extractor</span>
                                             </a>
                                         </li>
                                 <li>
@@ -189,18 +189,11 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="">
-                                    <img src="https://img.icons8.com/material/24/000000/facebook.png"></i>
-                                    <span>Facebook</span>
+                                <a href="/mixreport">
+                                    <img src="https://img.icons8.com/material/24/000000/pie-chart.png"></i>
+                                    <span>Facebook vs Instagram</span>    
                                 </a>
                             </li>
-                            <li>
-                                <a href="">
-                                    <img src="https://img.icons8.com/material/24/000000/instagram-new.png"></i>
-                                    <span>Instagram</span>    
-                                </a>
-                            </li>
-                            
                         </ul>
                     </li>
                     <li>
@@ -406,7 +399,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-                <h2>FACEBOOK SCRAPPER</h2>
+                <h2>FACEBOOK Extractor</h2>
             </div>
             <!-- Input -->
             <div class="row clearfix">
@@ -428,13 +421,7 @@
                                                     <input type="text" class="form-control" name="stoken" placeholder="SHORT LIVED TOKEN" required/>
                                                 </div>
                                             </div>
-                                            <div class="form-group form-group-lg">
-                                                    <div class="form-line form-float">
-                                                        <input type="text" class="form-control" name="token" value="{{ token }}" placeholder="USER ACCESS TOKEN" readonly/>
-                                                    </div>
-                                            </div>
-                                            
-                                            <div class="form-group form-group-lg">
+                                         <div class="form-group form-group-lg">
                                                     <div class="form-float">
                                                         <center><input type="submit" class="btn btn-primary" value="Generate Long Lived Token"/></center>
                                                     </div>
@@ -444,13 +431,15 @@
                                         <form action="/fbscrap" method="GET">
                                             <div id="hide" class="form-group form-group-lg">
                                                     <div class="form-line form-float">
-                                                        <input type="text" class="form-control" name="stoken1" placeholder="USER ACCESS TOKEN" required/>
+                                                        <input type="text" class="form-control" name="stoken1" value="{{ token }}" placeholder="USER ACCESS TOKEN" required/>
                                                     </div>
                                             <br>
                                             <div class="form-group form-group-lg">
                                            
                                                 <div class="form-float">
-                                                        <center><input type="submit" class="btn btn-primary" value="Start Scrapping"/></center>
+                                                        <center><input type="submit" class="btn btn-primary" value="Start Extracting"/></center>
+                                                        <br>
+                                                        <center>{{ status }}</center>
                                                     </div>
                                             </div>
                                         </div>

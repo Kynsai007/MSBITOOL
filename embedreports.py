@@ -1,8 +1,8 @@
 import requests
 def get_access_token():
-    username = 'sandhya.b@datasemantics.in'
-    password = 'S@n#ds17'
-    client_id = '153d8262-d79d-47f8-91da-6bae14ad617a'
+    username = 'jaishree.v@datasemantics.in'
+    password = 'Varadharaju5'
+    client_id = 'c303a621-6f78-42ac-a368-a565f7bd40e1'
     data = {
         'grant_type': 'password',
         'scope': 'openid',
@@ -21,11 +21,18 @@ def get_embed_token(access_token,group_id,report_id):
     response = requests.post(dest, data=settings, headers=headers)
     token = response.json().get('token')
     return token
+def get_embeddashboard_token(access_token,group_id,dashboard_id):
+    dest = 'https://api.powerbi.com/v1.0/myorg/groups/' + group_id + '/dashboards/' + dashboard_id + '/GenerateToken'
+    headers = {'Authorization': 'Bearer ' + access_token}
+    settings = { 'accessLevel': 'view' }
+    response = requests.post(dest, data=settings, headers=headers)
+    token = response.json().get('token')
+    return token
 
-def get_datasetkey(access_token,group_id,dataset_id):
+def get_datasetkey(access_token,group_id,datasetid):
     dest = 'https://api.powerbi.com/v1.0/myorg/groups/' + group_id + '/reports/GenerateToken'
     headers = {'Authorization': 'Bearer ' + access_token}
-    settings = { 'accessLevel': 'create', 'datasetId' : dataset_id, 'allowSaveAs': 'true'}
+    settings = { 'accessLevel': 'create','datasetId':datasetid,'allowSaveAs': 'true'}
     response = requests.post(dest, data=settings, headers=headers)
     token = response.json().get('token')
     return token   

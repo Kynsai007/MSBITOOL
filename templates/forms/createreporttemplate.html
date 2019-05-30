@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Webscrapper & Analyzer</title>
+    <title>Social Media Data Extractor & Analyzer</title>
     <!-- Favicon-->
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -76,7 +76,7 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="/index">Web Scrapper & Analyzer</a>
+                <a class="navbar-brand" href="/index">Social Media Data Extractor & Analyzer</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -157,7 +157,7 @@
                                 <li>
                                         <a id="source" href="#" onclick="check()">
                                                 <i class="material-icons">cloud_download</i>
-                                                <span>Data Scrapper</span>
+                                                <span>Data Extractor</span>
                                             </a>
                                         </li>
                                 <li>
@@ -189,15 +189,9 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="">
-                                    <img src="https://img.icons8.com/material/24/000000/facebook.png"></i>
-                                    <span>Facebook</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="">
-                                    <img src="https://img.icons8.com/material/24/000000/instagram-new.png"></i>
-                                    <span>Instagram</span>    
+                                <a href="/mixreport">
+                                    <img src="https://img.icons8.com/material/24/000000/pie-chart.png"></i>
+                                    <span>Facebook vs Instagram</span>    
                                 </a>
                             </li>
                             
@@ -404,20 +398,38 @@
     
 
     <section class="content">
-        <div class="container-fluid" style="height:700px">
+        <div class="container-fluid" id="container-fluid" style="height:700px">
+            <input type="button" id="toggle_fullscreen" width="40px" height="20px" value="Fullscreen">
             <div id="reportContainer" style="height:100%;min-height:100%;display:block;">
                 <script src='https://cdn.jsdelivr.net/npm/powerbi-client@2.6.6/dist/powerbi.js'></script> 
                 <script>
                 var models = window['powerbi-client'].models;
-            
+                console.log('{{ embedtoken }}');
+                console.log('{{ embedurl }}');
+                console.log('{{ datasetid }}');
                 var embedConfiguration = {
-                    tokenType: models.TokenType.Embed,
+                    tokenType:models.TokenType.Embed,
                     accessToken: '{{ embedtoken }}',
                     embedUrl: '{{ embedurl }}',
-                    datasetId: '{{ id }}',
+                    datasetId: '{{ datasetid }}'
                 };
-                var reportContainer = $('#reportContainer')[0];
-                var report = powerbi.createReport(reportContainer, embedCreateConfiguration);
+                var reportContainer = document.getElementById('reportContainer');
+                var report = powerbi.createReport(reportContainer, embedConfiguration);
+                report.off("loaded");
+ 
+                report.on("loaded", function() {
+                    console.log("Loaded");
+                });
+ 
+                report.off("error");
+                report.on("error", function(event) {
+                    console.log(event.detail);
+                });
+                report.off("saved");
+                report.on("saved", function(event) {
+                    console.log(event.detail);
+                console.log('In order to interact with the new report, create a new token and load the new report');
+                });
                 </script>
         </div>
         </div>
@@ -425,7 +437,42 @@
        
     <!-- Jquery Core Js -->
     <script src="static/plugins/jquery/jquery.min.js"></script>
-
+    <script>
+        $('#toggle_fullscreen').on('click', function(){
+          // if already full screen; exit
+          // else go fullscreen
+          if (
+            document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement
+          ) {
+            document.getElementById('toggle_fullscreen').value = 'Fullscreen';  
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+              document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+              document.msExitFullscreen();
+            }
+            
+          } else {
+            element = $('#container-fluid').get(0);
+            document.getElementById('toggle_fullscreen').value = 'Exit Fullscreen';
+            if (element.requestFullscreen) {
+              element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+              element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+              element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            } else if (element.msRequestFullscreen) {
+              element.msRequestFullscreen();
+            }
+          }
+        });
+        </script>
     <!-- Bootstrap Core Js -->
     <script src="static/plugins/bootstrap/js/bootstrap.js"></script>
 

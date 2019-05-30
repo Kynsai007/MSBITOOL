@@ -14,14 +14,12 @@ def get_fb_token(stoken):
     app_id = '373526949908614'
     app_secret = '363a948596918281544a628c57802c7a'
     extended_token = graph.extend_access_token(app_id, app_secret)
-    return extended_token
+    return extended_token['access_token']
 def get_fb_data(stoken):
     try:
         page_token = stoken
         graph = facebook.GraphAPI(access_token=page_token, version="3.2")
         page_id=405667483335062
-        insta_id=17841411295437036
-
         imageheadercolumns = ['type','created_time','object_id','id']
         videoheadercolumns = ['type','name','created_time','id']
         posts_25 = graph.get_object(id=page_id,fields='posts.fields(type, name, created_time, object_id)')

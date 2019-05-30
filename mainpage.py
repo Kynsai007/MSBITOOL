@@ -111,7 +111,7 @@ def get_facebook():
     if session.get('username') is None:
         return render_template('index.html',image = '',username = '')
     else:
-        return render_template('forms/facebook.html',image = session['image'],username= session['username'], token = '')
+        return render_template('forms/facebook.html',image = session['image'],username= session['username'], token = '',status = '')
     
 
 @app.route('/instagram')
@@ -119,45 +119,66 @@ def get_insta():
     if session.get('username') is None:
         return render_template('index.html',image = '',username = '')
     else:
-        return render_template('forms/instagram.html',image = session['image'],username= session['username'],token = '')
+        return render_template('forms/instagram.html',image = session['image'],username= session['username'],token = '',status = '')
     
-@app.route('/twitter')
-def get_twit():
-    if session.get('username') is None:
-        return render_template('index.html',image = '',username = '')
-    else:
-        return render_template('forms/twitter.html',image = session['image'],username= session['username'],token = '')
-
 @app.route('/generate',methods=["GET","POST"])
 def get_token():
     if request.method == "POST":
         token = pageinsight.get_fb_token(request.form["stoken"])
-        return render_template('forms/facebook.html',image = session['image'],username= session['username'],token = token)
+        return render_template('forms/facebook.html',image = session['image'],username= session['username'],token = token,status = '')
 
 @app.route('/fbscrap')
 def get_fbdata():
     token = request.args.get("stoken1")
     res = pageinsight.get_fb_data(token)
-    return render_template('forms/facebook.html',image = session['image'],username= session['username'],token = res)
+    return render_template('forms/facebook.html',image = session['image'],username= session['username'],token = '',status = res)
 
 @app.route('/instareport')
 def get_instareport():
-    group_id = '4f445ef7-7251-4c99-8b3c-d8a42e08788b'
-    report_id = 'f7b13239-27b9-4feb-ab6c-1248091364a4'
+    group_id = '000ca0ba-78dd-4dff-bd9c-91f25ccf6d6f'
+    report_id = '7237a915-560e-40f1-aee9-85b81f4784d6'
     accesstoken = em.get_access_token()
     embedtoken = em.get_embed_token(accesstoken,group_id,report_id)
     embed_url = 'https://app.powerbi.com/reportEmbed?reportId=' + report_id + '&groupId=' + group_id
     return render_template('forms/reportstemplate.html',image = session['image'],username= session['username'],token = '',embedtoken = embedtoken,id = report_id,embedurl = embed_url)
 
+@app.route('/facebookreport')
+def get_facereport():
+    group_id = '000ca0ba-78dd-4dff-bd9c-91f25ccf6d6f'
+    report_id = '9a962eb0-16b1-435f-8b66-971067cf9c5d'
+    accesstoken = em.get_access_token()
+    embedtoken = em.get_embed_token(accesstoken,group_id,report_id)
+    embed_url = 'https://app.powerbi.com/reportEmbed?reportId=' + report_id + '&groupId=' + group_id
+    return render_template('forms/reportstemplate.html',image = session['image'],username= session['username'],token = '',embedtoken = embedtoken,id = report_id,embedurl = embed_url)
+
+@app.route('/mixreport')
+def get_mixreport():
+    group_id = '000ca0ba-78dd-4dff-bd9c-91f25ccf6d6f'
+    dashboard_id = '15573f5d-356a-46f3-a3ff-50aee3020c0a'
+    accesstoken = em.get_access_token()
+    embedtoken = em.get_embeddashboard_token(accesstoken,group_id,dashboard_id)
+    embed_url = 'https://app.powerbi.com/dashboardEmbed?dashboardId=' + dashboard_id + '&groupId=' + group_id
+    return render_template('forms/dashboardtemplate.html',image = session['image'],username= session['username'],token = '',embedtoken = embedtoken,id = dashboard_id,embedurl = embed_url)
+
+
 @app.route('/createinsta')
 def create_instareport():
-    group_id = '4f445ef7-7251-4c99-8b3c-d8a42e08788b'
-    dataset_id = 'b50b2585-7a3b-47ee-b278-52853c4c7cd3'
+    dataset_id = 'ecc9e9b6-2b06-4afa-b0ea-b6df999f3821'
+    group_id = '000ca0ba-78dd-4dff-bd9c-91f25ccf6d6f'
     accesstoken = em.get_access_token()
-    print(accesstoken)
     embedtoken = em.get_datasetkey(accesstoken,group_id,dataset_id)
-    print(embedtoken)
-    return render_template('forms/reportstemplate.html',image = session['image'],username= session['username'],token = '',embedtoken = embedtoken, id = dataset_id,embedurl = 'https://embedded.powerbi.com/reportEmbed'+group_id)
+    embed_url = 'https://app.powerbi.com/reportEmbed?groupId=' + group_id
+    return render_template('forms/createreporttemplate.html',image = session['image'],username= session['username'],token = '',datasetid = dataset_id,embedtoken = embedtoken,embedurl = embed_url)
+
+@app.route('/createfb')
+def create_fbreport():
+    dataset_id = '42392835-dfeb-4bbe-a22f-3093b1d4e930'
+    group_id = '000ca0ba-78dd-4dff-bd9c-91f25ccf6d6f'
+    accesstoken = em.get_access_token()
+    embedtoken = em.get_datasetkey(accesstoken,group_id,dataset_id)
+    embed_url = 'https://app.powerbi.com/reportEmbed?groupId=' + group_id
+    return render_template('forms/createreporttemplate.html',image = session['image'],username= session['username'],token = '',embedtoken = embedtoken,datasetid = dataset_id,embedurl = embed_url)
+
 
 @app.route('/instascrap')
 def get_instadata():
@@ -231,7 +252,7 @@ def get_instadata():
                 videodata.append(videoarr)   
     writefile('RecentImagePost.csv',Imagecolumns,imagedata)
     writefile('RecentVideoPost.csv',Videocolumns,videodata)
-    return render_template('forms/instagram.html',image = session['image'],username= session['username'],token = '')
+    return render_template('forms/instagram.html',image = session['image'],username= session['username'],token = '',result = 'Data is saved!!')
 
 def writefile(filename,header,data):
     append_write = 'w'
